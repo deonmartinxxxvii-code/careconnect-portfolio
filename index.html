@@ -1,0 +1,1788 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="CareConnect is an independent Salesforce emergency department operations portfolio project with a future path toward intelligent hospital logistics." />
+  <meta name="author" content="Deon Martin" />
+  <title>CareConnect | Salesforce Emergency Department Operations Portfolio</title>
+
+  <style>
+    :root {
+      --navy-950: #0b1830;
+      --navy-900: #102448;
+      --navy-800: #17345f;
+      --indigo-700: #4655a7;
+      --violet-600: #6e5db8;
+      --teal-600: #137f89;
+      --teal-500: #20a1aa;
+      --cyan-100: #eaf8f9;
+      --blue-50: #f4f7fc;
+      --slate-950: #111827;
+      --slate-800: #243047;
+      --slate-600: #5d6980;
+      --slate-500: #718096;
+      --line: #dce4ef;
+      --line-dark: rgba(255,255,255,.14);
+      --white: #ffffff;
+      --success: #237a57;
+      --warning: #9a6c22;
+      --max: 1180px;
+      --radius-xl: 28px;
+      --radius-lg: 20px;
+      --radius-md: 14px;
+      --shadow-lg: 0 30px 80px rgba(7, 20, 48, .20);
+      --shadow-md: 0 18px 45px rgba(25, 52, 95, .10);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    section[id], header[id] { scroll-margin-top: 88px; }
+    a:focus-visible, button:focus-visible {
+      outline: 3px solid #59d7dc;
+      outline-offset: 4px;
+    }
+    body {
+      margin: 0;
+      color: var(--slate-950);
+      background: var(--white);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; }
+    img { max-width: 100%; display: block; }
+    button, input, textarea, select { font: inherit; }
+
+    .skip-link {
+      position: absolute;
+      left: -9999px;
+      top: 0;
+      z-index: 1000;
+      padding: .8rem 1rem;
+      background: white;
+      color: var(--navy-900);
+      border-radius: 0 0 10px 10px;
+    }
+    .skip-link:focus { left: 1rem; }
+
+    .container {
+      width: min(var(--max), calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    .site-nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      border-bottom: 1px solid rgba(220,228,239,.82);
+      background: rgba(255,255,255,.92);
+      backdrop-filter: blur(16px);
+    }
+    .nav-inner {
+      min-height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      font-weight: 850;
+      letter-spacing: -.025em;
+      color: var(--navy-900);
+    }
+    .brand-mark {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border-radius: 13px;
+      background: linear-gradient(140deg, var(--navy-800), var(--indigo-700) 58%, var(--violet-600));
+      color: white;
+      box-shadow: 0 9px 22px rgba(69,85,167,.25);
+      font-size: 14px;
+      font-weight: 900;
+      letter-spacing: .02em;
+    }
+    .brand small {
+      display: block;
+      color: var(--slate-500);
+      font-size: 10px;
+      font-weight: 750;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      line-height: 1.1;
+      margin-top: 1px;
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      font-size: 13px;
+      font-weight: 780;
+    }
+    .nav-links a {
+      text-decoration: none;
+      color: var(--slate-600);
+    }
+    .nav-links a:hover { color: var(--navy-900); }
+    .nav-cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 40px;
+      padding: 0 14px;
+      border-radius: 11px;
+      background: var(--navy-900);
+      color: white !important;
+    }
+    .menu-button {
+      display: none;
+      border: 1px solid var(--line);
+      background: white;
+      border-radius: 11px;
+      min-width: 42px;
+      min-height: 42px;
+      color: var(--navy-900);
+      cursor: pointer;
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 84% 20%, rgba(110,93,184,.38), transparent 27rem),
+        radial-gradient(circle at 12% 85%, rgba(32,161,170,.20), transparent 30rem),
+        linear-gradient(132deg, var(--navy-950), var(--navy-900) 50%, #263c76);
+      color: white;
+      padding: 92px 0 82px;
+    }
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      opacity: .17;
+      background-image:
+        linear-gradient(rgba(255,255,255,.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.08) 1px, transparent 1px);
+      background-size: 48px 48px;
+      mask-image: linear-gradient(to bottom, black, transparent 85%);
+    }
+    .hero-grid {
+      position: relative;
+      display: grid;
+      grid-template-columns: 1.08fr .92fr;
+      align-items: center;
+      gap: 56px;
+    }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      padding: 8px 12px;
+      border: 1px solid rgba(255,255,255,.20);
+      border-radius: 999px;
+      color: #e9efff;
+      background: rgba(255,255,255,.08);
+      font-size: 12px;
+      font-weight: 820;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+    .pulse {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #66d3d8;
+      box-shadow: 0 0 0 5px rgba(102,211,216,.14);
+    }
+    h1 {
+      margin: 20px 0 22px;
+      max-width: 760px;
+      font-size: clamp(44px, 6.5vw, 73px);
+      line-height: 1.01;
+      letter-spacing: -.055em;
+    }
+    .hero h1 span { color: #8de0e4; }
+    .hero-copy {
+      max-width: 735px;
+      margin: 0 0 28px;
+      color: #d7e0f0;
+      font-size: 19px;
+      line-height: 1.72;
+    }
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 26px;
+    }
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 0 18px;
+      border: 1px solid transparent;
+      border-radius: 13px;
+      text-decoration: none;
+      font-weight: 820;
+      transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+    }
+    .button:hover { transform: translateY(-2px); }
+    .button-primary {
+      color: var(--navy-950);
+      background: white;
+      box-shadow: 0 12px 28px rgba(0,0,0,.18);
+    }
+    .button-secondary {
+      color: white;
+      border-color: rgba(255,255,255,.24);
+      background: rgba(255,255,255,.08);
+    }
+    .button-dark {
+      color: white;
+      background: var(--navy-900);
+      box-shadow: 0 12px 27px rgba(16,36,72,.18);
+    }
+    .button-outline {
+      color: var(--navy-900);
+      border-color: var(--line);
+      background: white;
+    }
+    .hero-proof {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 23px;
+    }
+    .proof-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      border: 1px solid rgba(255,255,255,.16);
+      border-radius: 999px;
+      padding: 7px 10px;
+      color: #d9e4f5;
+      background: rgba(5,16,37,.18);
+      font-size: 11px;
+      font-weight: 760;
+    }
+    .proof-pill::before {
+      content: "✓";
+      color: #79d5d9;
+      font-weight: 900;
+    }
+
+    .product-frame {
+      position: relative;
+      padding: 14px;
+      border: 1px solid rgba(255,255,255,.16);
+      border-radius: 30px;
+      background: rgba(255,255,255,.10);
+      box-shadow: var(--shadow-lg);
+      backdrop-filter: blur(12px);
+      transform: perspective(1100px) rotateY(-4deg) rotateX(1deg);
+    }
+    .product-window {
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,.14);
+      border-radius: 20px;
+      background: #f8fafe;
+    }
+    .window-bar {
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 14px;
+      background: linear-gradient(90deg, #17345f, #4655a7);
+    }
+    .window-dots { display: flex; gap: 7px; }
+    .window-dot { width: 7px; height: 7px; border-radius: 50%; background: rgba(255,255,255,.72); }
+    .window-title { font-size: 10px; font-weight: 800; color: white; letter-spacing: .06em; text-transform: uppercase; }
+    .window-body { padding: 14px; }
+    .mini-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .mini-heading { width: 48%; height: 13px; border-radius: 999px; background: #bcc9dc; }
+    .mini-chip { width: 72px; height: 24px; border-radius: 999px; background: #dff3f4; }
+    .mini-metrics {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+    }
+    .mini-metric {
+      min-height: 72px;
+      padding: 10px;
+      border: 1px solid #dde5f0;
+      border-radius: 12px;
+      background: white;
+    }
+    .mini-metric strong {
+      display: block;
+      color: var(--navy-800);
+      font-size: 21px;
+      line-height: 1;
+      margin-bottom: 7px;
+    }
+    .mini-metric span {
+      display: block;
+      height: 6px;
+      width: 72%;
+      border-radius: 999px;
+      background: #d9e1ec;
+    }
+    .mini-main {
+      display: grid;
+      grid-template-columns: 1.35fr .65fr;
+      gap: 9px;
+      margin-top: 9px;
+    }
+    .mini-panel {
+      border: 1px solid #dde5f0;
+      border-radius: 13px;
+      background: white;
+      padding: 11px;
+    }
+    .chart {
+      position: relative;
+      min-height: 145px;
+      overflow: hidden;
+      background:
+        linear-gradient(#e9edf4 1px, transparent 1px),
+        linear-gradient(90deg, #e9edf4 1px, transparent 1px);
+      background-size: 26px 26px;
+      border-radius: 9px;
+    }
+    .chart svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+    .task-list { display: grid; gap: 8px; }
+    .task {
+      display: grid;
+      grid-template-columns: 7px 1fr;
+      gap: 7px;
+      align-items: center;
+    }
+    .task b { width: 7px; height: 7px; border-radius: 50%; background: var(--teal-500); }
+    .task span { height: 7px; border-radius: 999px; background: #dce4ef; }
+
+    section { padding: 82px 0; }
+    .section-soft {
+      background: linear-gradient(180deg, #f7f9fd, #ffffff);
+      border-top: 1px solid #e7edf5;
+      border-bottom: 1px solid #e7edf5;
+    }
+    .section-dark {
+      color: white;
+      background: linear-gradient(135deg, var(--navy-950), #172e5b 65%, #293f7c);
+    }
+    .section-head {
+      max-width: 790px;
+      margin-bottom: 34px;
+    }
+    .kicker {
+      display: inline-block;
+      color: var(--teal-600);
+      font-size: 12px;
+      font-weight: 880;
+      letter-spacing: .11em;
+      text-transform: uppercase;
+    }
+    .section-dark .kicker { color: #76d1d6; }
+    h2 {
+      margin: 8px 0 13px;
+      font-size: clamp(32px, 5vw, 49px);
+      line-height: 1.08;
+      letter-spacing: -.042em;
+    }
+    .lead {
+      margin: 0;
+      color: var(--slate-600);
+      font-size: 18px;
+      line-height: 1.72;
+    }
+    .section-dark .lead { color: #cbd6e8; }
+
+    .grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 15px; }
+
+    .card {
+      position: relative;
+      overflow: hidden;
+      padding: 24px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      background: white;
+      box-shadow: 0 12px 35px rgba(20,45,85,.055);
+    }
+    .card h3 {
+      margin: 0 0 8px;
+      color: var(--navy-900);
+      font-size: 18px;
+      letter-spacing: -.02em;
+    }
+    .card p {
+      margin: 0;
+      color: var(--slate-600);
+    }
+    .card-icon {
+      width: 44px;
+      height: 44px;
+      display: grid;
+      place-items: center;
+      margin-bottom: 16px;
+      border-radius: 14px;
+      color: var(--navy-800);
+      background: linear-gradient(135deg, #e9eefb, #e5f6f7);
+      font-weight: 900;
+      font-size: 13px;
+    }
+    .number {
+      position: absolute;
+      top: 15px;
+      right: 17px;
+      color: #dfe5ef;
+      font-size: 29px;
+      font-weight: 900;
+      letter-spacing: -.05em;
+    }
+
+    .problem-strip {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 22px;
+      align-items: stretch;
+      margin-top: 34px;
+    }
+    .problem-box, .solution-box {
+      padding: 28px;
+      border-radius: var(--radius-xl);
+      border: 1px solid var(--line);
+      background: white;
+      box-shadow: var(--shadow-md);
+    }
+    .problem-box { border-top: 5px solid #a16c6c; }
+    .solution-box { border-top: 5px solid var(--teal-600); }
+    .problem-box h3, .solution-box h3 {
+      margin: 0 0 13px;
+      font-size: 22px;
+      color: var(--navy-900);
+    }
+    .problem-box ul, .solution-box ul {
+      margin: 0;
+      padding-left: 20px;
+      color: var(--slate-600);
+    }
+    .problem-box li, .solution-box li { margin: 8px 0; }
+    .center-arrow {
+      display: grid;
+      place-items: center;
+      color: var(--indigo-700);
+      font-size: 30px;
+      font-weight: 900;
+    }
+
+    .status-grid {
+      display: grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 22px;
+      align-items: start;
+    }
+    .status-card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius-xl);
+      background: white;
+      overflow: hidden;
+      box-shadow: var(--shadow-md);
+    }
+    .status-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      padding: 19px 22px;
+      border-bottom: 1px solid var(--line);
+      background: #fafcff;
+    }
+    .status-title h3 { margin: 0; color: var(--navy-900); }
+    .status-badge {
+      border-radius: 999px;
+      padding: 6px 10px;
+      font-size: 11px;
+      font-weight: 840;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+    }
+    .built { color: #1e684b; background: #e4f4ec; }
+    .active { color: #745015; background: #fff2d6; }
+    .roadmap { color: #4f4b8f; background: #ebe9fa; }
+    .status-list { padding: 12px 22px 20px; }
+    .status-row {
+      display: grid;
+      grid-template-columns: 22px 1fr;
+      gap: 11px;
+      padding: 12px 0;
+      border-bottom: 1px solid #edf1f6;
+    }
+    .status-row:last-child { border-bottom: 0; }
+    .check {
+      width: 20px;
+      height: 20px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      font-size: 11px;
+      font-weight: 900;
+    }
+    .check-done { color: white; background: var(--success); }
+    .check-work { color: white; background: var(--warning); }
+    .check-plan { color: white; background: var(--violet-600); }
+    .status-row strong { display: block; color: var(--slate-800); font-size: 14px; }
+    .status-row span { display: block; color: var(--slate-600); font-size: 13px; margin-top: 2px; }
+
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 34px;
+    }
+    .metric {
+      padding: 19px 14px;
+      border: 1px solid var(--line);
+      border-radius: 17px;
+      background: white;
+      text-align: center;
+    }
+    .metric strong {
+      display: block;
+      color: var(--navy-900);
+      font-size: 30px;
+      line-height: 1;
+      letter-spacing: -.04em;
+      margin-bottom: 8px;
+    }
+    .metric.metric-text strong {
+      font-size: 19px;
+      line-height: 1.12;
+      letter-spacing: -.02em;
+    }
+    .metric span {
+      display: block;
+      color: var(--slate-600);
+      font-size: 11px;
+      line-height: 1.4;
+    }
+
+    .workflow {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 28px;
+    }
+    .workflow-step {
+      position: relative;
+      min-height: 138px;
+      padding: 19px 16px;
+      border: 1px solid var(--line);
+      border-radius: 17px;
+      background: white;
+    }
+    .workflow-step:not(:last-child)::after {
+      content: "→";
+      position: absolute;
+      right: -13px;
+      top: 48%;
+      z-index: 2;
+      width: 25px;
+      height: 25px;
+      display: grid;
+      place-items: center;
+      border: 1px solid var(--line);
+      border-radius: 50%;
+      background: white;
+      color: var(--indigo-700);
+      font-weight: 900;
+    }
+    .workflow-step b {
+      display: inline-grid;
+      place-items: center;
+      width: 30px;
+      height: 30px;
+      margin-bottom: 11px;
+      border-radius: 10px;
+      background: var(--navy-900);
+      color: white;
+      font-size: 12px;
+    }
+    .workflow-step strong { display: block; color: var(--navy-900); font-size: 14px; }
+    .workflow-step span { display: block; color: var(--slate-600); font-size: 12px; margin-top: 5px; }
+
+    .architecture {
+      display: grid;
+      grid-template-columns: 1fr auto 1.05fr auto 1fr;
+      align-items: center;
+      gap: 12px;
+      margin-top: 30px;
+    }
+    .arch-stack { display: grid; gap: 9px; }
+    .arch-node {
+      padding: 13px 12px;
+      border: 1px solid rgba(255,255,255,.16);
+      border-radius: 13px;
+      color: #edf3ff;
+      background: rgba(255,255,255,.07);
+      text-align: center;
+      font-size: 12px;
+      font-weight: 780;
+    }
+    .arch-node.emphasis {
+      border-color: rgba(116,209,214,.38);
+      background: rgba(32,161,170,.14);
+      color: white;
+    }
+    .arch-arrow { color: #7dd5d9; font-size: 28px; font-weight: 900; }
+
+    .tag-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 9px;
+      margin-top: 16px;
+    }
+    .tag {
+      padding: 7px 10px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: #fbfcfe;
+      color: #526078;
+      font-size: 11px;
+      font-weight: 750;
+    }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: 1.4fr .6fr;
+      gap: 20px;
+    }
+    .gallery-column { display: grid; gap: 20px; }
+    .shot {
+      min-height: 360px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      padding: 22px;
+      border: 1px solid #d5deeb;
+      border-radius: var(--radius-xl);
+      background:
+        radial-gradient(circle at 82% 12%, rgba(110,93,184,.16), transparent 18rem),
+        linear-gradient(145deg, #f7f9fd, #ffffff);
+      box-shadow: 0 18px 42px rgba(20,45,85,.08);
+    }
+    .shot.small { min-height: 250px; }
+    .shot:not(.small) .shot-screen { flex: 1 1 auto; }
+    .shot:not(.small) .shot-body {
+      display: flex;
+      flex-direction: column;
+      height: calc(100% - 42px);
+    }
+    .shot:not(.small) .preview-grid { flex: 1 1 auto; }
+    .shot:not(.small) .preview-chart,
+    .shot:not(.small) .preview-list { height: 100%; }
+    .shot-screen {
+      position: relative;
+      overflow: hidden;
+      flex: 0 0 auto;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: white;
+      box-shadow: 0 14px 30px rgba(20,45,85,.12);
+    }
+    .shot-top {
+      min-height: 42px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 0 15px;
+      color: white;
+      background: linear-gradient(90deg, var(--navy-800), var(--indigo-700));
+      font-size: 11px;
+      font-weight: 850;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+    }
+    .shot-live {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: #dff8f9;
+      font-size: 9px;
+    }
+    .shot-live::before {
+      content: "";
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #75dde1;
+      box-shadow: 0 0 0 4px rgba(117,221,225,.15);
+    }
+    .shot-body { padding: 14px; }
+    .preview-metrics {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 9px;
+    }
+    .preview-metric {
+      padding: 11px;
+      border: 1px solid #e0e7f0;
+      border-radius: 11px;
+      background: #f8fafe;
+    }
+    .preview-metric strong { display: block; color: var(--navy-900); font-size: 19px; }
+    .preview-metric span { display: block; margin-top: 2px; color: var(--slate-600); font-size: 9px; }
+    .preview-grid {
+      display: grid;
+      grid-template-columns: 1.35fr .65fr;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    .preview-chart, .preview-list {
+      min-height: 104px;
+      border: 1px solid #e0e7f0;
+      border-radius: 11px;
+      background: #fbfcfe;
+    }
+    .preview-chart {
+      display: flex;
+      align-items: flex-end;
+      gap: 8px;
+      padding: 14px;
+    }
+    .preview-bar {
+      flex: 1;
+      min-width: 9px;
+      border-radius: 6px 6px 2px 2px;
+      background: linear-gradient(180deg, #75d8dc, #445bb2);
+    }
+    .preview-list { padding: 13px; }
+    .preview-list-row {
+      display: grid;
+      grid-template-columns: 8px 1fr;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 9px;
+    }
+    .preview-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--teal-600); }
+    .preview-line { height: 7px; border-radius: 999px; background: #dbe4ef; }
+    .transport-route {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 8px;
+      align-items: center;
+      margin-top: 3px;
+    }
+    .route-point {
+      padding: 12px 8px;
+      border: 1px solid #e0e7f0;
+      border-radius: 10px;
+      color: var(--navy-900);
+      background: #f8fafe;
+      text-align: center;
+      font-size: 10px;
+      font-weight: 800;
+    }
+    .route-arrow { color: var(--teal-600); font-weight: 900; }
+    .transport-stages { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+    .transport-stage {
+      padding: 5px 7px;
+      border-radius: 999px;
+      color: #38516e;
+      background: #edf3f8;
+      font-size: 8px;
+      font-weight: 800;
+    }
+    .transport-stage.active { color: #075d64; background: #d9f4f5; }
+    .security-preview { display: grid; gap: 8px; }
+    .security-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+      align-items: center;
+      padding: 9px 10px;
+      border: 1px solid #e0e7f0;
+      border-radius: 10px;
+      color: var(--navy-900);
+      background: #f8fafe;
+      font-size: 9px;
+      font-weight: 800;
+    }
+    .security-access { color: #08757b; font-size: 8px; text-transform: uppercase; }
+    .shot-caption {
+      margin-top: auto;
+      padding-top: 20px;
+    }
+    .shot-caption h3 { margin: 0 0 3px; color: var(--navy-900); font-size: 17px; }
+    .shot-caption p { margin: 0; color: var(--slate-600); font-size: 12px; }
+
+    .callout {
+      margin-top: 25px;
+      padding: 19px 21px;
+      border-left: 5px solid var(--teal-600);
+      border-radius: 0 15px 15px 0;
+      color: #234850;
+      background: var(--cyan-100);
+    }
+    .callout strong { color: #173a42; }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 34px;
+      align-items: start;
+    }
+    .portrait {
+      aspect-ratio: 1;
+      display: grid;
+      place-items: center;
+      border-radius: 30px;
+      color: white;
+      background:
+        radial-gradient(circle at 70% 18%, rgba(255,255,255,.20), transparent 8rem),
+        linear-gradient(140deg, var(--navy-900), var(--indigo-700), var(--violet-600));
+      box-shadow: var(--shadow-lg);
+      font-size: 52px;
+      font-weight: 900;
+      letter-spacing: -.04em;
+    }
+    .about-copy p {
+      color: var(--slate-600);
+      font-size: 17px;
+    }
+
+    .contact-panel {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 26px;
+      align-items: center;
+      padding: 34px;
+      border-radius: var(--radius-xl);
+      color: white;
+      background:
+        radial-gradient(circle at 90% 20%, rgba(110,93,184,.45), transparent 18rem),
+        linear-gradient(135deg, var(--navy-950), #1c376c);
+      box-shadow: var(--shadow-lg);
+    }
+    .contact-panel h2 { margin-top: 0; }
+    .contact-panel p { max-width: 700px; margin: 0; color: #ccd7e8; }
+    .contact-actions {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 10px;
+      min-width: 210px;
+    }
+    .copy-email-button {
+      cursor: pointer;
+      color: white;
+      border-color: rgba(255,255,255,.24);
+      background: rgba(255,255,255,.08);
+    }
+    .copy-status {
+      min-height: 18px;
+      color: #cfecef;
+      font-size: 12px;
+      text-align: center;
+    }
+
+
+    .future-vision {
+      position: relative;
+      overflow: hidden;
+      color: white;
+      background:
+        radial-gradient(circle at 88% 20%, rgba(32,161,170,.24), transparent 24rem),
+        radial-gradient(circle at 10% 85%, rgba(110,93,184,.25), transparent 26rem),
+        linear-gradient(135deg, #0d1e3a, #172f59 56%, #263c76);
+    }
+    .future-vision .section-head .lead {
+      color: #d7e0f0;
+    }
+    .future-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 16px;
+      padding: 7px 11px;
+      border: 1px solid rgba(255,255,255,.18);
+      border-radius: 999px;
+      color: #dff8f9;
+      background: rgba(255,255,255,.07);
+      font-size: 11px;
+      font-weight: 850;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+    .future-foundation {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: stretch;
+      gap: 18px;
+      margin-top: 32px;
+    }
+    .future-foundation-card {
+      padding: 24px;
+      border: 1px solid rgba(255,255,255,.14);
+      border-radius: var(--radius-lg);
+      background: rgba(255,255,255,.07);
+      box-shadow: 0 18px 45px rgba(0,0,0,.14);
+    }
+    .future-foundation-card h3 {
+      margin: 0 0 8px;
+      font-size: 20px;
+    }
+    .future-foundation-card p {
+      margin: 0;
+      color: #ced9e9;
+      font-size: 14px;
+    }
+    .future-connector {
+      display: grid;
+      place-items: center;
+      min-width: 54px;
+      color: #8de0e4;
+      font-size: 27px;
+      font-weight: 900;
+    }
+    .future-flow {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-top: 22px;
+    }
+    .future-flow-step {
+      position: relative;
+      min-height: 168px;
+      padding: 20px;
+      border: 1px solid rgba(255,255,255,.13);
+      border-radius: 17px;
+      background: rgba(255,255,255,.06);
+    }
+    .future-flow-step b {
+      display: inline-grid;
+      place-items: center;
+      width: 30px;
+      height: 30px;
+      margin-bottom: 14px;
+      border-radius: 10px;
+      color: #0b1830;
+      background: #8de0e4;
+      font-size: 12px;
+    }
+    .future-flow-step strong {
+      display: block;
+      margin-bottom: 7px;
+      color: white;
+      font-size: 16px;
+    }
+    .future-flow-step span {
+      display: block;
+      color: #cbd7e8;
+      font-size: 13px;
+      line-height: 1.55;
+    }
+    .future-benefits {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-top: 22px;
+    }
+    .future-benefit {
+      padding: 20px;
+      border-radius: 17px;
+      color: var(--slate-950);
+      background: white;
+      box-shadow: 0 18px 40px rgba(0,0,0,.16);
+    }
+    .future-benefit h3 {
+      margin: 0 0 7px;
+      color: var(--navy-900);
+      font-size: 16px;
+    }
+    .future-benefit p {
+      margin: 0;
+      color: var(--slate-600);
+      font-size: 13px;
+    }
+
+    footer {
+      padding: 43px 0;
+      color: #d4deec;
+      background: #09152b;
+    }
+    .footer-grid {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 22px;
+    }
+    .footer-title { color: white; font-weight: 850; }
+    .footer-note { font-size: 12px; color: #9eb0ca; margin-top: 3px; }
+    .footer-links { display: flex; flex-wrap: wrap; gap: 10px; }
+    .footer-links a {
+      padding: 8px 11px;
+      border: 1px solid rgba(255,255,255,.15);
+      border-radius: 10px;
+      text-decoration: none;
+      font-size: 12px;
+      font-weight: 750;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; }
+    }
+
+    @media (max-width: 1040px) {
+      .hero-grid { grid-template-columns: 1fr; }
+      .product-frame { max-width: 680px; transform: none; }
+      .metric-grid { grid-template-columns: repeat(3, 1fr); }
+      .workflow { grid-template-columns: repeat(3, 1fr); }
+      .workflow-step::after { display: none; }
+      .architecture { grid-template-columns: 1fr; }
+      .arch-arrow { text-align: center; transform: rotate(90deg); }
+      .grid-4 { grid-template-columns: repeat(2, 1fr); }
+      .future-flow, .future-benefits { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 780px) {
+      .nav-links {
+        position: absolute;
+        left: 20px;
+        right: 20px;
+        top: 64px;
+        display: none;
+        padding: 16px;
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        background: white;
+        box-shadow: var(--shadow-md);
+        flex-direction: column;
+        align-items: stretch;
+        gap: 7px;
+      }
+      .nav-links.open { display: flex; }
+      .nav-links a { padding: 8px 5px; }
+      .menu-button { display: inline-grid; place-items: center; }
+      .problem-strip { grid-template-columns: 1fr; }
+      .center-arrow { transform: rotate(90deg); }
+      .grid-3, .grid-2 { grid-template-columns: 1fr; }
+      .gallery { grid-template-columns: 1fr; }
+      .status-grid { grid-template-columns: 1fr; }
+      .future-foundation { grid-template-columns: 1fr; }
+      .future-connector { transform: rotate(90deg); }
+      .about-grid { grid-template-columns: 1fr; }
+      .portrait { width: 180px; }
+      .contact-panel { grid-template-columns: 1fr; }
+      .workflow { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 520px) {
+      .container { width: min(var(--max), calc(100% - 28px)); }
+      .hero { padding: 70px 0 60px; }
+      .hero-copy { font-size: 17px; }
+      .mini-metrics { grid-template-columns: repeat(2, 1fr); }
+      .mini-main { grid-template-columns: 1fr; }
+      .metric-grid { grid-template-columns: repeat(2, 1fr); }
+      .grid-4 { grid-template-columns: 1fr; }
+      .future-flow, .future-benefits { grid-template-columns: 1fr; }
+      .workflow { grid-template-columns: 1fr; }
+      .contact-panel { padding: 26px; }
+      .footer-grid { align-items: flex-start; flex-direction: column; }
+    }
+  </style>
+</head>
+
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+
+  <nav class="site-nav" aria-label="Primary navigation">
+    <div class="container nav-inner">
+      <a class="brand" href="#top" aria-label="CareConnect home">
+        <span class="brand-mark">CC</span>
+        <span>
+          CareConnect
+          <small>Salesforce Portfolio</small>
+        </span>
+      </a>
+
+      <button class="menu-button" type="button" aria-expanded="false" aria-controls="primary-links" aria-label="Open navigation">☰</button>
+
+      <div class="nav-links" id="primary-links">
+        <a href="#problem">The Problem</a>
+        <a href="#solution">The Platform</a>
+        <a href="#status">Build Status</a>
+        <a href="#future">Future Vision</a>
+        <a href="#architecture">Architecture</a>
+        <a href="#evidence">Evidence</a>
+        <a class="nav-cta" href="#contact">Contact</a>
+      </div>
+    </div>
+  </nav>
+
+  <main id="main">
+    <header class="hero" id="top">
+      <div class="container hero-grid">
+        <div>
+          <div class="eyebrow"><span class="pulse"></span> Active Salesforce Portfolio Project</div>
+
+          <h1>
+            Emergency department operations,
+            <span>connected.</span>
+          </h1>
+
+          <p class="hero-copy">
+            CareConnect is a secure Salesforce emergency department (ER) operations platform designed to reduce hospital staff burden,
+            improve patient flow and safety, support mobile patient transportation workflows, and provide real-time visibility into
+            patient status, operational risks, readiness, and outstanding work.
+          </p>
+
+          <div class="hero-actions">
+            <a class="button button-primary" href="#solution">Explore CareConnect</a>
+            <a class="button button-secondary" href="#architecture">View Architecture</a>
+          </div>
+
+          <div class="hero-proof" aria-label="Project qualifications">
+            <span class="proof-pill">Independent portfolio project</span>
+            <span class="proof-pill">Built with synthetic data</span>
+            <span class="proof-pill">Desktop and Salesforce mobile</span>
+            <span class="proof-pill">Security-first design</span>
+          </div>
+        </div>
+
+        <div class="product-frame" aria-label="Stylized CareConnect command center preview">
+          <div class="product-window">
+            <div class="window-bar">
+              <div class="window-dots">
+                <span class="window-dot"></span>
+                <span class="window-dot"></span>
+                <span class="window-dot"></span>
+              </div>
+              <div class="window-title">Hospital Operations Command Center</div>
+            </div>
+
+            <div class="window-body">
+              <div class="mini-header">
+                <div class="mini-heading"></div>
+                <div class="mini-chip"></div>
+              </div>
+
+              <div class="mini-metrics">
+                <div class="mini-metric"><strong>7</strong><span></span></div>
+                <div class="mini-metric"><strong>2</strong><span></span></div>
+                <div class="mini-metric"><strong>1</strong><span></span></div>
+                <div class="mini-metric"><strong>0</strong><span></span></div>
+              </div>
+
+              <div class="mini-main">
+                <div class="mini-panel">
+                  <div class="chart">
+                    <svg viewBox="0 0 460 150" aria-hidden="true">
+                      <path d="M8,120 C62,112 74,73 127,80 C181,88 197,42 249,57 C306,73 339,22 453,35"
+                            fill="none" stroke="#4655a7" stroke-width="5" stroke-linecap="round"/>
+                      <circle cx="127" cy="80" r="5" fill="#20a1aa"/>
+                      <circle cx="249" cy="57" r="5" fill="#20a1aa"/>
+                      <circle cx="453" cy="35" r="5" fill="#20a1aa"/>
+                    </svg>
+                  </div>
+                </div>
+
+                <div class="mini-panel">
+                  <div class="task-list">
+                    <div class="task"><b></b><span></span></div>
+                    <div class="task"><b></b><span></span></div>
+                    <div class="task"><b></b><span></span></div>
+                    <div class="task"><b></b><span></span></div>
+                    <div class="task"><b></b><span></span></div>
+                    <div class="task"><b></b><span></span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <section id="problem" class="section-soft">
+      <div class="container">
+        <div class="section-head">
+          <span class="kicker">The operational challenge</span>
+          <h2>Hospital staff should not have to chase the operational picture.</h2>
+          <p class="lead">
+            Emergency department teams work across patient care, transportation, readiness, movement, handoffs, safety,
+            and department dependencies. When information is fragmented, staff lose time finding updates instead of acting on them.
+          </p>
+        </div>
+
+        <div class="problem-strip">
+          <article class="problem-box">
+            <h3>Without a connected workflow</h3>
+            <ul>
+              <li>Patient status and location can become difficult to verify.</li>
+              <li>Transportation and department work can be delayed or unclear.</li>
+              <li>Outstanding blockers may be discovered too late.</li>
+              <li>Shift handoffs depend heavily on manual preparation.</li>
+              <li>Leaders lack a reliable, role-aware operational view.</li>
+            </ul>
+          </article>
+
+          <div class="center-arrow" aria-hidden="true">→</div>
+
+          <article class="solution-box">
+            <h3>CareConnect brings the work together</h3>
+            <ul>
+              <li>One authoritative current patient location.</li>
+              <li>Role-specific queues, actions, and accountability.</li>
+              <li>Real-time census, transportation, and readiness visibility.</li>
+              <li>Auditable lifecycle history from registration through discharge.</li>
+              <li>Permission-aware views that protect sensitive information.</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="solution">
+      <div class="container">
+        <div class="section-head">
+          <span class="kicker">The CareConnect platform</span>
+          <h2>One operational picture. Role-specific action.</h2>
+          <p class="lead">
+            CareConnect combines Salesforce administration, automation, security, analytics, custom development,
+            and mobile work execution into one emergency department operations platform.
+          </p>
+        </div>
+
+        <div class="grid-3">
+          <article class="card">
+            <span class="number">01</span>
+            <div class="card-icon">CC</div>
+            <h3>Command Center</h3>
+            <p>Facility-level census, immediate alerts, blocker aging, movement, priority work, and data-health visibility.</p>
+          </article>
+
+          <article class="card">
+            <span class="number">02</span>
+            <div class="card-icon">LC</div>
+            <h3>Live Census & Location Integrity</h3>
+            <p>Each active encounter is counted once at one authoritative operational location while movement history remains auditable.</p>
+          </article>
+
+          <article class="card">
+            <span class="number">03</span>
+            <div class="card-icon">TR</div>
+            <h3>Patient Transportation</h3>
+            <p>Mobile and desktop work queues, validated lifecycle actions, receiving confirmation, team visibility, and rolling history.</p>
+          </article>
+
+          <article class="card">
+            <span class="number">04</span>
+            <div class="card-icon">OR</div>
+            <h3>Operational Readiness</h3>
+            <p>Structured blockers identify what is missing, who owns it, what step is blocked, and whether completion was verified.</p>
+          </article>
+
+          <article class="card">
+            <span class="number">05</span>
+            <div class="card-icon">DR</div>
+            <h3>Department Work Routing</h3>
+            <p>Department requests support accountable routing, timing, ownership, escalation, verification, and controlled closure.</p>
+          </article>
+
+          <article class="card">
+            <span class="number">06</span>
+            <div class="card-icon">SH</div>
+            <h3>Shift Handoff Direction</h3>
+            <p>A structured handoff model will reduce manual preparation and highlight meaningful changes, risks, and unfinished work.</p>
+          </article>
+        </div>
+
+        <div class="workflow" aria-label="Patient movement lifecycle">
+          <div class="workflow-step"><b>1</b><strong>Requested</strong><span>Patient remains at the origin location.</span></div>
+          <div class="workflow-step"><b>2</b><strong>Accepted</strong><span>Assignment is acknowledged and accountable.</span></div>
+          <div class="workflow-step"><b>3</b><strong>In Progress</strong><span>Patient is counted only as in transportation.</span></div>
+          <div class="workflow-step"><b>4</b><strong>Arrived</strong><span>Patient location moves to the destination.</span></div>
+          <div class="workflow-step"><b>5</b><strong>Completed</strong><span>Workflow closes without moving the patient again.</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="status" class="section-soft">
+      <div class="container">
+        <div class="section-head">
+          <span class="kicker">Transparent project status</span>
+          <h2>What is built, what is active, and what comes next.</h2>
+          <p class="lead">
+            CareConnect is an actively developed portfolio platform. Completed functionality and active development are separated so employers can clearly distinguish
+            demonstrated work from features that are currently being built.
+          </p>
+        </div>
+
+        <div class="status-grid">
+          <article class="status-card">
+            <div class="status-title">
+              <h3>Built and validated</h3>
+              <span class="status-badge built">Completed</span>
+            </div>
+            <div class="status-list">
+              <div class="status-row">
+                <span class="check check-done">✓</span>
+                <div><strong>Transportation lifecycle</strong><span>Acceptance, start, arrival, nursing handoff, validation, completion, and 24-hour history.</span></div>
+              </div>
+              <div class="status-row">
+                <span class="check check-done">✓</span>
+                <div><strong>Patient location integrity</strong><span>Authoritative current location with auditable movement transactions and duplicate-active-movement protection.</span></div>
+              </div>
+              <div class="status-row">
+                <span class="check check-done">✓</span>
+                <div><strong>Role-based security foundation</strong><span>Permission sets, permission-set groups, sharing, CRUD/FLS, custom permissions, and facility authorization.</span></div>
+              </div>
+              <div class="status-row">
+                <span class="check check-done">✓</span>
+                <div><strong>Migration and multi-persona validation</strong><span>Four migration waves completed with security, reporting, desktop, and mobile validation.</span></div>
+              </div>
+            </div>
+          </article>
+
+          <div class="gallery-column">
+            <article class="status-card">
+              <div class="status-title">
+                <h3>Active development</h3>
+                <span class="status-badge active">In Progress</span>
+              </div>
+              <div class="status-list">
+                <div class="status-row">
+                  <span class="check check-work">•</span>
+                  <div><strong>Command Center refinement</strong><span>Performance, final QA, role visibility, drill-down authorization, and enterprise polish.</span></div>
+                </div>
+                <div class="status-row">
+                  <span class="check check-work">•</span>
+                  <div><strong>Nursing Shift Handoff</strong><span>Concise multi-patient handoff centered on “What Changed Since You Left?”</span></div>
+                </div>
+                <div class="status-row">
+                  <span class="check check-work">•</span>
+                  <div><strong>Permission-aware Agentforce and AI workflows</strong><span>Active design of source-grounded summaries, operational recommendations, human confirmation, and auditable AI-assisted actions.</span></div>
+                </div>
+                <div class="status-row">
+                  <span class="check check-work">+</span>
+                  <div><strong>Hospital logistics expansion planning</strong><span>Defining a future path for non-patient logistics, human and robotic delivery coordination, analytics, and operational intelligence.</span></div>
+                </div>
+              </div>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="future" class="future-vision">
+      <div class="container">
+        <div class="section-head">
+          <span class="future-label">Strategic roadmap</span>
+          <span class="kicker">Future vision</span>
+          <h2>From patient movement to intelligent hospital logistics.</h2>
+          <p class="lead">
+            CareConnect is designed to grow from its validated patient-transport foundation into a broader hospital
+            operations and logistics platform. The future direction extends existing request, readiness, assignment,
+            verification, security, and audit patterns without mixing non-patient logistics into the patient-location record.
+          </p>
+        </div>
+
+        <div class="future-foundation">
+          <article class="future-foundation-card">
+            <h3>Department Requests initiate the work</h3>
+            <p>
+              Requests capture what needs to be done, its urgency, ownership, readiness, status, and completion evidence.
+              This creates a common operational front door for hospital work.
+            </p>
+          </article>
+
+          <div class="future-connector" aria-hidden="true">+</div>
+
+          <article class="future-foundation-card">
+            <h3>Movement Events protect patient location</h3>
+            <p>
+              Patient movements remain governed by a dedicated lifecycle that preserves authoritative location,
+              transportation status, handoff evidence, and auditable history.
+            </p>
+          </article>
+        </div>
+
+        <div class="future-flow" aria-label="CareConnect strategic expansion path">
+          <article class="future-flow-step">
+            <b>01</b>
+            <strong>Patient transportation</strong>
+            <span>Current foundation for readiness, assignment, pickup, arrival, nursing handoff, location integrity, and history.</span>
+          </article>
+          <article class="future-flow-step">
+            <b>02</b>
+            <strong>Internal logistics</strong>
+            <span>Future coordination of specimens, medications, supplies, equipment, linen, and other time-sensitive hospital materials.</span>
+          </article>
+          <article class="future-flow-step">
+            <b>03</b>
+            <strong>Human and robotic delivery</strong>
+            <span>A shared operational layer for assigning approved work to staff, couriers, or robotic delivery systems.</span>
+          </article>
+          <article class="future-flow-step">
+            <b>04</b>
+            <strong>AI-assisted operations</strong>
+            <span>Permission-aware summaries, delay signals, workload insight, and recommendations with authorized human review.</span>
+          </article>
+        </div>
+
+        <div class="future-benefits">
+          <article class="future-benefit">
+            <h3>Less wasted movement</h3>
+            <p>Readiness checks can reduce trips that begin before the patient, item, destination, or required equipment is ready.</p>
+          </article>
+          <article class="future-benefit">
+            <h3>One operational picture</h3>
+            <p>Teams can see ownership, status, blockers, exceptions, and next steps without relying on disconnected calls and follow-up.</p>
+          </article>
+          <article class="future-benefit">
+            <h3>Closed-loop accountability</h3>
+            <p>Pickup, custody, delivery, receiving verification, timestamps, and exception reasons create measurable evidence.</p>
+          </article>
+          <article class="future-benefit">
+            <h3>AI-ready foundation</h3>
+            <p>Structured, permission-aware operational data can support safer recommendations and better decisions over time.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="architecture" class="section-dark">
+      <div class="container">
+        <div class="section-head">
+          <span class="kicker">Security architecture</span>
+          <h2>Access follows responsibility.</h2>
+          <p class="lead">
+            Users can understand the broader emergency department flow while records, fields, actions, identity data,
+            and drill-down access remain limited by their authorized job responsibilities.
+          </p>
+        </div>
+
+        <div class="architecture" aria-label="CareConnect security and application architecture">
+          <div class="arch-stack">
+            <div class="arch-node">Clinical User</div>
+            <div class="arch-node">Transport User</div>
+            <div class="arch-node">Department Owner</div>
+            <div class="arch-node">Leadership Viewer</div>
+            <div class="arch-node">Administrative User</div>
+            <div class="arch-node">Restricted User</div>
+          </div>
+
+          <div class="arch-arrow" aria-hidden="true">→</div>
+
+          <div class="arch-stack">
+            <div class="arch-node emphasis">Permission Sets & Groups</div>
+            <div class="arch-node emphasis">Sharing, CRUD & FLS</div>
+            <div class="arch-node emphasis">Custom Permissions</div>
+            <div class="arch-node emphasis">Facility Authorization</div>
+            <div class="arch-node emphasis">Apex Security Enforcement</div>
+          </div>
+
+          <div class="arch-arrow" aria-hidden="true">→</div>
+
+          <div class="arch-stack">
+            <div class="arch-node">Lightning Web Components</div>
+            <div class="arch-node">Flow & Validation Controls</div>
+            <div class="arch-node">Apex Services & Test Classes</div>
+            <div class="arch-node">Custom Metadata Policies</div>
+            <div class="arch-node">Reports & Dashboards</div>
+            <div class="arch-node">Salesforce Mobile</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="evidence">
+      <div class="container">
+        <div class="section-head">
+          <span class="kicker">Verified project evidence</span>
+          <h2>More than a concept deck.</h2>
+          <p class="lead">
+            The portfolio documents hands-on Salesforce solution design, administration, security, testing, migration,
+            mobile validation, and governance work completed through CareConnect.
+          </p>
+        </div>
+
+        <div class="metric-grid">
+          <div class="metric"><strong>6</strong><span>Operational personas validated</span></div>
+          <div class="metric"><strong>4</strong><span>Completed migration waves</span></div>
+          <div class="metric metric-text"><strong>Role-based</strong><span>Modular security architecture</span></div>
+          <div class="metric metric-text"><strong>Policy-driven</strong><span>Configurable application controls</span></div>
+          <div class="metric metric-text"><strong>Cross-device</strong><span>Desktop and mobile validation</span></div>
+          <div class="metric metric-text"><strong>Auditable</strong><span>Lifecycle and exception history</span></div>
+        </div>
+
+        <div class="grid-4" style="margin-top: 24px;">
+          <article class="card">
+            <div class="card-icon">AD</div>
+            <h3>Administration</h3>
+            <p>Data modeling, custom objects, Lightning pages, validation rules, reporting, mobile configuration, and metadata management.</p>
+          </article>
+          <article class="card">
+            <div class="card-icon">DV</div>
+            <h3>Development</h3>
+            <p>Apex services, test classes, Lightning Web Components, custom metadata, secure server-side logic, and responsive UX.</p>
+          </article>
+          <article class="card">
+            <div class="card-icon">QA</div>
+            <h3>Testing & Delivery</h3>
+            <p>Dry-run deployment, target-org migration, lifecycle validation, security QA, desktop testing, mobile testing, and rollback preservation.</p>
+          </article>
+          <article class="card">
+            <div class="card-icon">GV</div>
+            <h3>Governance</h3>
+            <p>Least privilege, source-of-truth rules, auditability, data quality, privacy-conscious design, and permission-aware AI governance.</p>
+          </article>
+        </div>
+
+        <div class="tag-list" aria-label="Salesforce technologies">
+          <span class="tag">Salesforce Platform</span>
+          <span class="tag">Lightning App Builder</span>
+          <span class="tag">Flow Builder</span>
+          <span class="tag">Apex</span>
+          <span class="tag">Apex Test Classes</span>
+          <span class="tag">Lightning Web Components</span>
+          <span class="tag">Custom Metadata</span>
+          <span class="tag">Permission Sets</span>
+          <span class="tag">Permission Set Groups</span>
+          <span class="tag">CRUD / FLS</span>
+          <span class="tag">Reports & Dashboards</span>
+          <span class="tag">Salesforce CLI</span>
+          <span class="tag">Visual Studio Code</span>
+          <span class="tag">Salesforce Mobile</span>
+          <span class="tag">User Acceptance Testing</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="screens" class="section-soft">
+      <div class="container">
+        <div class="section-head">
+          <span class="kicker">Product experiences</span>
+          <h2>Core CareConnect operational experiences.</h2>
+          <p class="lead">
+            This section highlights the Command Center, Transportation Operations, Patient Encounter,
+            Salesforce mobile, reporting, and role-based security experiences demonstrated through CareConnect.
+          </p>
+        </div>
+
+        <div class="gallery">
+          <article class="shot">
+            <div class="shot-screen">
+              <div class="shot-top">
+                <span>Hospital Operations Command Center</span>
+                <span class="shot-live">Operational view</span>
+              </div>
+              <div class="shot-body">
+                <div class="preview-metrics">
+                  <div class="preview-metric"><strong>7</strong><span>Active patients</span></div>
+                  <div class="preview-metric"><strong>2</strong><span>Critical blockers</span></div>
+                  <div class="preview-metric"><strong>1</strong><span>In transportation</span></div>
+                </div>
+                <div class="preview-grid">
+                  <div class="preview-chart" aria-hidden="true">
+                    <span class="preview-bar" style="height:38%"></span>
+                    <span class="preview-bar" style="height:55%"></span>
+                    <span class="preview-bar" style="height:47%"></span>
+                    <span class="preview-bar" style="height:72%"></span>
+                    <span class="preview-bar" style="height:64%"></span>
+                    <span class="preview-bar" style="height:84%"></span>
+                  </div>
+                  <div class="preview-list" aria-hidden="true">
+                    <div class="preview-list-row"><span class="preview-dot"></span><span class="preview-line"></span></div>
+                    <div class="preview-list-row"><span class="preview-dot"></span><span class="preview-line"></span></div>
+                    <div class="preview-list-row"><span class="preview-dot"></span><span class="preview-line"></span></div>
+                    <div class="preview-list-row"><span class="preview-dot"></span><span class="preview-line"></span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="shot-caption">
+              <h3>Hospital Operations Command Center</h3>
+              <p>Live census, alerts, blockers, movement, priority work, and data health.</p>
+            </div>
+          </article>
+
+          <div class="gallery-column">
+            <article class="shot small">
+              <div class="shot-screen">
+                <div class="shot-top"><span>Transportation Operations</span><span class="shot-live">Mobile ready</span></div>
+                <div class="shot-body">
+                  <div class="transport-route">
+                    <div class="route-point">Origin</div><div class="route-arrow">→</div><div class="route-point">Destination</div>
+                  </div>
+                  <div class="transport-stages">
+                    <span class="transport-stage">Requested</span>
+                    <span class="transport-stage active">In Progress</span>
+                    <span class="transport-stage">Arrived</span>
+                  </div>
+                </div>
+              </div>
+              <div class="shot-caption">
+                <h3>Transportation Operations</h3>
+                <p>Desktop and Salesforce mobile workflow.</p>
+              </div>
+            </article>
+
+            <article class="shot small">
+              <div class="shot-screen">
+                <div class="shot-top"><span>Security & Access</span><span class="shot-live">Role aware</span></div>
+                <div class="shot-body security-preview">
+                  <div class="security-row"><span>Clinical User</span><span class="security-access">Authorized</span></div>
+                  <div class="security-row"><span>Transport User</span><span class="security-access">Assigned work</span></div>
+                  <div class="security-row"><span>Leadership Viewer</span><span class="security-access">Read only</span></div>
+                </div>
+              </div>
+              <div class="shot-caption">
+                <h3>Security & Access Model</h3>
+                <p>Role-aware visibility and action controls.</p>
+              </div>
+            </article>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <section id="about">
+      <div class="container">
+        <div class="about-grid">
+          <div class="portrait" aria-label="Deon Martin initials">DM</div>
+
+          <div class="about-copy">
+            <span class="kicker">About the builder</span>
+            <h2>Deon Martin</h2>
+
+            <p>
+              I am a Salesforce professional with hands-on experience designing, configuring, securing, testing,
+              migrating, and developing CareConnect, an independent portfolio project built on Salesforce.
+              My background includes hospital pharmacy, sterile compounding, pharmaceutical manufacturing support,
+              GMP documentation, barcode-supported workflows, inventory management, quality controls, and regulated operations.
+            </p>
+
+            <p>
+              CareConnect uses emergency department operations as a demanding real-world scenario. The project demonstrates
+              transferable Salesforce capabilities, including workflow routing, security, lifecycle management, analytics,
+              mobile execution, auditability, and business process improvement.
+            </p>
+
+            <p>
+              I am currently preparing for the Salesforce Administrator certification exam while continuing to expand CareConnect. I am open to Salesforce administration, CRM analysis, business systems,
+              application support, QA/UAT, and implementation opportunities across industries.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" style="padding-top: 20px;">
+      <div class="container">
+        <div class="contact-panel">
+          <div>
+            <span class="kicker">Professional opportunities</span>
+            <h2>Let’s discuss Salesforce operations, administration, and solution delivery.</h2>
+            <p>
+              I am open to Salesforce Administrator, CRM Analyst, Business Systems Analyst, Salesforce Support,
+              QA/UAT, implementation, and healthcare-technology opportunities across industries.
+            </p>
+          </div>
+
+          <div class="contact-actions">
+            <a class="button button-primary"
+               href="mailto:deonmartinxxxvii@gmail.com?subject=CareConnect%20Portfolio%20Inquiry">
+              Email Deon
+            </a>
+            <button class="button button-secondary copy-email-button" type="button"
+                    data-email="deonmartinxxxvii@gmail.com">
+              Copy Email Address
+            </button>
+            <span class="copy-status" role="status" aria-live="polite"></span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-grid">
+      <div>
+        <div class="footer-title">CareConnect Portfolio</div>
+        <div class="footer-note">Independent Salesforce portfolio project · Synthetic demonstration data only</div>
+      </div>
+
+      <div class="footer-links">
+        <a href="mailto:deonmartinxxxvii@gmail.com">Email</a>
+        <a href="#top">Back to top</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const menuButton = document.querySelector(".menu-button");
+    const navLinks = document.querySelector(".nav-links");
+
+    menuButton.addEventListener("click", () => {
+      const isOpen = navLinks.classList.toggle("open");
+      menuButton.setAttribute("aria-expanded", String(isOpen));
+      menuButton.textContent = isOpen ? "✕" : "☰";
+    });
+
+    navLinks.querySelectorAll("a").forEach((link) => {
+      link.addEventListener("click", () => {
+        navLinks.classList.remove("open");
+        menuButton.setAttribute("aria-expanded", "false");
+        menuButton.textContent = "☰";
+      });
+    });
+
+    const copyButton = document.querySelector(".copy-email-button");
+    const copyStatus = document.querySelector(".copy-status");
+
+    async function copyEmailAddress() {
+      const email = copyButton.dataset.email;
+
+      try {
+        await navigator.clipboard.writeText(email);
+        copyStatus.textContent = "Email address copied.";
+      } catch (error) {
+        const temporaryInput = document.createElement("textarea");
+        temporaryInput.value = email;
+        temporaryInput.setAttribute("readonly", "");
+        temporaryInput.style.position = "absolute";
+        temporaryInput.style.left = "-9999px";
+        document.body.appendChild(temporaryInput);
+        temporaryInput.select();
+        document.execCommand("copy");
+        temporaryInput.remove();
+        copyStatus.textContent = "Email address copied.";
+      }
+
+      window.setTimeout(() => {
+        copyStatus.textContent = "";
+      }, 3000);
+    }
+
+    copyButton.addEventListener("click", copyEmailAddress);
+  </script>
+</body>
+</html>
