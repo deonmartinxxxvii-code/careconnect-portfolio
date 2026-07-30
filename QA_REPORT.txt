@@ -1,0 +1,53 @@
+CareConnect Website V10 QA Report
+Date: July 30, 2026
+
+NAVIGATION FIXES
+PASS - Primary navigation now follows the page order:
+       Platform, Status, Roadmap, Agentforce, Build.
+PASS - Roadmap has its own unique #roadmap target.
+PASS - Build has its own unique #build target.
+PASS - Sticky-header offset is applied to every navigation target.
+PASS - Clicking Roadmap opens the Roadmap accordion before scrolling.
+PASS - Direct links ending in #roadmap or #build are handled on page load.
+PASS - Footer navigation matches the main page order.
+PASS - Current section highlighting is available for supported browsers.
+
+STRUCTURE AND FILE QA
+PASS - No duplicate HTML IDs.
+PASS - Every internal anchor points to an existing unique target.
+PASS - CSS, JavaScript, screenshots, and resume files are present.
+PASS - All local file references resolve.
+PASS - JavaScript syntax passes Node.js validation.
+PASS - CSS opening and closing braces are balanced.
+PASS - All content images include alternate text.
+PASS - The four full-size screenshot targets exist.
+PASS - Resume links point to the packaged PDF.
+
+WRITING AND CHARACTER QA
+PASS - No em dash characters found in HTML, CSS, JavaScript, README, or QA text.
+PASS - No en dash characters found in HTML, CSS, JavaScript, README, or QA text.
+PASS - No Unicode minus characters found in HTML, CSS, JavaScript, README, or QA text.
+PASS - Visible website copy was reviewed for repetitive AI-style transitions,
+       inflated claims, canned conclusions, and unnecessary buzzwords.
+PASS - Agentforce copy stays focused on one concrete role and keeps the nurse
+       responsible for review and handoff.
+
+RESPONSIVE AND INTERACTION REVIEW
+PASS - Existing desktop and mobile breakpoints remain intact.
+PASS - Navigation correction does not change the transport screenshots,
+       module layout, accordions, career section, or lightbox behavior.
+PASS - Lightbox code now checks for required elements before use.
+PASS - Escape key, close button, and backdrop close behavior remain in place.
+PASS - Smooth scrolling uses the measured sticky-header height instead of a
+       fixed guess in JavaScript.
+
+EXTERNAL LINK NOTICE
+ACTION REQUIRED BEFORE PUBLIC LAUNCH - links.js still contains general
+Trailhead, GitHub, LinkedIn, and blank email destinations. These are not broken
+local files, but they must be replaced with Deon Martin's exact public profile
+URLs and email address before the site is published.
+
+FINAL RESULT
+The navigation-order defect and incorrect landing position for Build and
+Roadmap are corrected. Static package QA passed. The only known launch item is
+replacing the four general external destinations in links.js.
