@@ -1,96 +1,105 @@
 # CareConnect
 
-CareConnect is an independent Salesforce emergency department operations portfolio project designed and developed by Deon Martin.
+CareConnect is a Salesforce application I designed and built to improve hospital operations by bringing patient movement, operational work, and real-time visibility into one platform.
 
-## Overview
+The idea for CareConnect came from my experience working in healthcare, where I saw how difficult it can be to coordinate information across departments. I built this project to explore how Salesforce can improve communication, accountability, workflow efficiency, and operational awareness in fast-paced clinical environments.
 
-CareConnect is designed to reduce hospital staff burden, improve patient flow and safety, support mobile patient transportation workflows, and provide real-time visibility into patient status, operational risks, readiness, and outstanding work.
+Although CareConnect is modeled around hospital operations, the same concepts can be applied anywhere secure workflows, role-based access, automation, and real-time visibility are important.
 
-The project uses emergency department operations as a demanding real-world scenario while demonstrating Salesforce capabilities that are transferable across industries.
+---
 
-## Core capabilities
+## What CareConnect Does
 
-- Hospital Operations Command Center
-- Live census and patient location integrity
-- Patient transportation lifecycle management
-- Operational readiness and blocker tracking
-- Department request routing and accountability
-- Role-based security and facility authorization
-- Salesforce mobile work execution
-- Reports, dashboards, alerts, and operational analytics
-- Nursing Shift Handoff development
-- Permission-aware Agentforce and AI workflow development
+CareConnect is designed to help organizations:
 
-## Salesforce experience demonstrated
+- Coordinate patient transportation
+- Improve operational visibility
+- Track department requests
+- Monitor operational readiness
+- Support mobile work execution
+- Strengthen accountability through role-based workflows
+- Provide dashboards and operational reporting
+- Reduce manual work through automation
 
-- Salesforce administration
-- Data modeling and custom objects
+---
+
+## Salesforce Skills Demonstrated
+
+This project demonstrates experience with:
+
+- Salesforce Administration
 - Lightning App Builder
+- Data Modeling
+- Custom Objects and Relationships
 - Flow Builder
-- Validation rules
-- Permission sets and permission set groups
-- Sharing, CRUD, and field-level security
-- Custom permissions
-- Apex services and test classes
-- Lightning Web Components
+- Validation Rules
+- Apex
+- Lightning Web Components (LWC)
+- Permission Sets and Permission Set Groups
+- Sharing Rules, CRUD, and Field-Level Security (FLS)
+- Custom Permissions
+- Reports and Dashboards
 - Custom Metadata Types
-- Reports and dashboards
 - Salesforce CLI
 - Visual Studio Code
-- Metadata migration and validation
-- Desktop and mobile QA
-- User acceptance testing
-- Security and AI governance
+- Metadata Deployment
+- Desktop and Mobile Development
+- User Acceptance Testing (UAT)
 
-## Verified project scope
+---
 
-- 6 operational personas validated
-- 4 completed migration waves
-- Modular role-based security architecture
-- Policy-driven application controls
-- Desktop and Salesforce mobile validation
-- Auditable lifecycle and exception history
+## Current Development
 
-## Project status
+CareConnect is an ongoing project that continues to evolve as I expand my Salesforce knowledge and build new features.
 
-### Built and validated
+My current focus is improving performance, user experience, mobile usability, reporting, and enterprise application design while maintaining security, scalability, and clean architecture.
 
-- Transportation lifecycle
-- Patient location integrity
-- Role-based security foundation
-- Multi-persona testing
-- Desktop and Salesforce mobile validation
-- Four Salesforce migration waves
+---
 
-### Active development
+## Security and Privacy
 
-- Command Center performance and final QA
-- Nursing Shift Handoff
-- Permission-aware Agentforce and AI workflows
-- Continued platform expansion across automation, analytics, mobile capabilities, and operational intelligence
+This repository is intended to showcase the project at a high level.
 
+It does **not** include:
 
-## Strategic expansion
+- Salesforce production source code
+- Private repositories
+- Credentials or authentication information
+- Protected Health Information (PHI)
+- Real patient or employee data
+- Proprietary implementation details or internal architecture
 
-CareConnect's future path extends the current patient-transport foundation into broader hospital logistics while preserving a clear separation between operational requests and patient movement.
+All demonstrations use synthetic data created for learning and portfolio purposes.
 
-- Department Requests initiate, route, prioritize, and track operational work.
-- Movement Events remain the authority for patient transportation and patient-location changes.
-- Future logistics use cases include specimens, medications, supplies, equipment, linen, and other time-sensitive hospital materials.
-- A future orchestration layer could coordinate approved work across human transport teams, couriers, and robotic delivery systems.
-- Permission-aware, human-supervised AI could support operational summaries, delay identification, workload insight, and assignment recommendations.
+---
 
+## About Me
 
-## Security and privacy
+My background is in healthcare, including sterile compounding, hospital pharmacy, pharmaceutical manufacturing support, inventory management, quality systems, and regulated operations.
 
-This public portfolio uses synthetic demonstration information only. It does not provide public access to the Salesforce org, credentials, authentication details, private source repositories, real patient information, or employee information.
+I built CareConnect to combine my healthcare experience with Salesforce development and demonstrate how enterprise technology can improve operational efficiency, coordination, and accountability.
 
-## About Deon Martin
+As I continue earning Salesforce certifications and gaining hands-on experience, CareConnect continues to grow alongside my skills.
 
-Deon Martin is a Salesforce professional with hands-on experience designing, configuring, securing, testing, migrating, and developing CareConnect. His background includes hospital pharmacy, sterile compounding, pharmaceutical manufacturing support, GMP documentation, barcode-supported workflows, inventory management, quality controls, and regulated operations.
-
-Salesforce Administrator certification exam preparation is in progress.
+---
 
 ## Contact
 
-Email: deonmartinxxxvii@gmail.com
+**Email:** deonmartinxxxvii@gmail.com
+
+**LinkedIn:**  
+https://www.linkedin.com/in/deon-martin-careconnect/
+
+**Salesforce Trailblazer:**  
+https://www.salesforce.com/trailblazer/deonmartin
+
+**Portfolio Website:**  
+*Coming Soon*
+
+---
+
+© 2026 Deon Martin
+
+CareConnect is an original portfolio project created and developed by Deon Martin.
+
+All rights reserved.
